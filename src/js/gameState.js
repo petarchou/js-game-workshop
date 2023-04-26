@@ -3,10 +3,12 @@ function initGameState() {
         score: 0,
         wizard: {
             scale: 1.2,
-            left: 3,
-            top: 40,
+            posX: 300,
+            posY: 200,
+            speed: 5,
         },
         keys: {},
+
     }
 
     return state;
