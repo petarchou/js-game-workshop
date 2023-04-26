@@ -1,5 +1,5 @@
 function startEngine(gameObjects, state) {
-
+    let wizard = gameObjects.createWizard(state.wizard);
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
