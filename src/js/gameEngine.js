@@ -4,7 +4,6 @@ function startEngine(gameObjects, state) {
 }
 
 function gameLoop(gameObjects,state) {
-    console.log('frame');
-    console.log(gameObjects.startScrn);
+    console.log(state.keys);
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
