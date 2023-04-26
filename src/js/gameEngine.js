@@ -27,6 +27,10 @@ function gameLoop(gameObjects,state,timestamp) {
 
     document.querySelectorAll('.bug').forEach(el => {
         const pos = parseInt(el.style.left);
+        if(pos < -state.bug.width) {
+            el.remove();
+            return;
+        }
         el.style.left = (pos - state.bug.speed) + 'px';
     })
 
