@@ -1,8 +1,12 @@
 let state = initGameState();
-let game = getGameObjects();
+let gameObjects = getGameObjects();
 
-game.startScrn.addEventListener('click',(e)=>{
-    game.startScrn.classList.add('hidden');
-    game.gameScrn.classList.remove('hidden');
+gameObjects.startScrn.addEventListener('click',function(e){
+    gameObjects.startScrn.classList.add('hidden');
+    gameObjects.gameScrn.classList.remove('hidden');
+
+
+    //start game
+    startEngine(gameObjects, state);
 })
 
