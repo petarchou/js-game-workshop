@@ -6,7 +6,7 @@ function getGameObjects() {
         let wizard = document.createElement('span');
         wizard.classList.add('wizard');
 
-        let [height,width] = [100*initialState.scale, 82*initialState.scale];
+        let {height, width} = initialState;
 
         wizard.style.height = height + 'px';
         wizard.style.width = width + 'px';
@@ -20,9 +20,26 @@ function getGameObjects() {
         return wizard;
     }
 
+    const spawnBug = function(initialState) {
+        const bugElement = document.createElement('span');
+        bugElement.classList.add('bug');
+
+        let {height, width} = initialState;
+
+        bugElement.style.height = height + 'px';
+        bugElement.style.width = width + 'px';
+        bugElement.style.left = gameScrn.offsetWidth-25 + 'px';
+        bugElement.style.top = Math.random()*(gameScrn.offsetHeight-height) + 'px';
+
+        gameScrn.appendChild(bugElement);
+
+        return bugElement;
+    }
+
     return {
         startScrn,
         gameScrn,
         createWizard,
+        spawnBug,
     };
 }
