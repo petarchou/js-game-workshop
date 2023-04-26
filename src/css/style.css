@@ -1,0 +1,28 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Consolas';
+}
+
+.game {
+    width: 100vw;
+    height: 100vh;
+    background: #aaddfc;
+} 
+
+.start-screen {
+    background: #999da061;
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.btn {
+    cursor: pointer;
+}
