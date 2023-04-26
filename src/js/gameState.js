@@ -19,8 +19,8 @@ function initGameState() {
                 this.width *= n;
                 this.height *= n;
             },
-            posX: 0,
-            posY: 0,
+            nextSpawnTimestamp: 0,
+            spawnDelay: 500,
         },
         keys: {
             keyW : false,

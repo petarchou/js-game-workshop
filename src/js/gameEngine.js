@@ -1,10 +1,10 @@
 function startEngine(gameObjects, state) {
     state.wizard.scale = 1.2;
     gameObjects.createWizard(state.wizard);
-    window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
+    window.requestAnimationFrame(timestamp => gameLoop(gameObjects,state,timestamp));
 }
 
-function gameLoop(gameObjects,state) {
+function gameLoop(gameObjects,state,timestamp) {
 
     const {wizard} = state;
     const {wizardElement} = gameObjects;
@@ -18,7 +18,10 @@ function gameLoop(gameObjects,state) {
     wizardElement.style.top = wizard.posY+'px';
 
     //Spawn bugs
-    gameObjects.spawnBug(state.bug);
+    if(timestamp > state.bug.nextSpawnTimestamp) {
+        gameObjects.spawnBug(state.bug);
+        state.bug.nextSpawnTimestamp = timestamp + state.bug.spawnDelay;
+    }
 
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }

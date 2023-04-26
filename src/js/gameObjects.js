@@ -28,7 +28,7 @@ function getGameObjects() {
 
         bugElement.style.height = height + 'px';
         bugElement.style.width = width + 'px';
-        bugElement.style.left = gameScrn.offsetWidth-25 + 'px';
+        bugElement.style.left = gameScrn.offsetWidth-50 + 'px';
         bugElement.style.top = Math.random()*(gameScrn.offsetHeight-height) + 'px';
 
         gameScrn.appendChild(bugElement);
