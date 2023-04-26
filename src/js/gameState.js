@@ -21,6 +21,7 @@ function initGameState() {
             },
             nextSpawnTimestamp: 0,
             spawnDelay: 500,
+            speed: 5,
         },
         keys: {
             keyW : false,

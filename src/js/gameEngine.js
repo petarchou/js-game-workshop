@@ -23,6 +23,14 @@ function gameLoop(gameObjects,state,timestamp) {
         state.bug.nextSpawnTimestamp = timestamp + state.bug.spawnDelay;
     }
 
+    //Render bugs
+
+    document.querySelectorAll('.bug').forEach(el => {
+        const pos = parseInt(el.style.left);
+        el.style.left = (pos - state.bug.speed) + 'px';
+    })
+
+
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
