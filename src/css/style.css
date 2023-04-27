@@ -49,3 +49,10 @@ body {
     background-repeat: no-repeat;
     overflow: hidden;
 }
+
+.fireball {
+    position: absolute;
+    background: url('/src/images/fire-ball.png');
+    background-size:cover;
+    background-repeat: no-repeat;
+}

@@ -36,10 +36,27 @@ function getGameObjects() {
         return bugElement;
     }
 
+    const spawnFireball = function(initialState) {
+        const fireballElement = document.createElement('span');
+        fireballElement.classList.add('fireball');
+
+        let {height,width} = initialState;
+        fireballElement.style.height = height + 'px';
+        fireballElement.style.width = width + 'px';
+        fireballElement.style.top = initialState.posY +'px';
+        fireballElement.style.left = initialState.posX +'px';
+
+        gameScrn.append(fireballElement);
+        this.fireballElement = fireballElement;
+
+        return fireballElement;
+    }
+
     return {
         startScrn,
         gameScrn,
         createWizard,
         spawnBug,
+        spawnFireball,
     };
 }

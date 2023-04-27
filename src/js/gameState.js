@@ -23,6 +23,13 @@ function initGameState() {
             spawnDelay: 500,
             speed: 5,
         },
+        fireball: {
+            height: 25,
+            width: 25,
+            projectileSpeed: 5,
+            timeBetweenAttacks: 500,
+        },
+
         keys: {
             keyW : false,
             keyA : false,
