@@ -26,7 +26,7 @@ function gameLoop(gameObjects,state,timestamp) {
 
     //Spawn Fireballs
     if(state.keys.Space) {
-        wizardElement.style.backgroundImage = 'url("/src/images/wizard-fire.png")';
+        wizardElement.style.backgroundImage = 'url("/images/wizard-fire.png")';
         if(timestamp > fireball.nextSpawnTimestamp) {
             fireball.posX = wizard.posX + wizard.width;
             fireball.posY = wizard.posY + wizard.width/2.5;
@@ -36,7 +36,7 @@ function gameLoop(gameObjects,state,timestamp) {
         }
     }
     else {
-        wizardElement.style.backgroundImage = 'url("/src/images/wizard.png")';
+        wizardElement.style.backgroundImage = 'url("/images/wizard.png")';
     }
 
     //Render Fireballs
