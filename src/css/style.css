@@ -55,7 +55,7 @@ body {
 }
 
 .wizard {
-    background: url('/src/images/wizard.png');
+    background: url('/images/wizard.png');
     background-size: cover;
     background-repeat: no-repeat;
     position:absolute;
@@ -63,7 +63,7 @@ body {
 
 .bug {
     position: absolute;
-    background: url('/src/images/bug.png');
+    background: url('/images/bug.png');
     background-size: cover;
     background-repeat: no-repeat;
     overflow: hidden;
@@ -71,7 +71,7 @@ body {
 
 .fireball {
     position: absolute;
-    background: url('/src/images/fire-ball.png');
+    background: url('/images/fire-ball.png');
     background-size:cover;
     background-repeat: no-repeat;
 }
