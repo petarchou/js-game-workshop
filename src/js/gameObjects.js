@@ -1,6 +1,9 @@
 function getGameObjects() {
     const startScrn = document.querySelector('.start-screen');
     const gameScrn = document.querySelector('.game-screen');
+    const endScrn = document.querySelector('.end-screen');
+    const scoreboard = document.querySelector('.score');
+    const endScore = document.querySelector('.end-score');
 
     const createWizard = function(initialState) {
         let wizard = document.createElement('span');
@@ -55,6 +58,9 @@ function getGameObjects() {
     return {
         startScrn,
         gameScrn,
+        endScrn,
+        scoreboard,
+        endScore,
         createWizard,
         spawnBug,
         spawnFireball,

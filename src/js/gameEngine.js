@@ -5,6 +5,13 @@ function startEngine(gameObjects, state) {
 }
 
 function gameLoop(gameObjects,state,timestamp) {
+    let isGameOver = false;
+    // if(state.score >= state.nextLevel) {
+    //     state.bug.speed +=2;
+    //     console.log('levelUp');
+
+    //     state.nextLevel += 100;
+    // }
 
     const {wizard, fireball} = state;
     const {wizardElement} = gameObjects;
@@ -50,13 +57,13 @@ function gameLoop(gameObjects,state,timestamp) {
 
     //Render bugs
 
-    document.querySelectorAll('.bug').forEach(el => {
-        const pos = parseInt(el.style.left);
+    document.querySelectorAll('.bug').forEach(bugElement => {
+        const pos = parseInt(bugElement.style.left);
         if(pos < -state.bug.width) {
-            el.remove();
+            killBugAndAddScore(bugElement,state, gameObjects);
             return;
         }
-        el.style.left = (pos - state.bug.speed) + 'px';
+        bugElement.style.left = (pos - state.bug.speed) + 'px';
     })
 
     //Fireball vs Bug collision
@@ -64,14 +71,27 @@ function gameLoop(gameObjects,state,timestamp) {
         document.querySelectorAll('.bug').forEach(bugElement=> {
             if(areColliding(fireballElement,bugElement)) {
                 fireballElement.remove();
-                bugElement.remove();
-                return;
+                killBugAndAddScore(bugElement,state, gameObjects);    
             }
         })
     })
 
+    //Character vs Bug Collision (Game Over)
+    document.querySelectorAll('.bug').forEach(bugElement=> {
+        if(areColliding(wizardElement,bugElement)) {
+            isGameOver = true;
+            return;
+        }
+    })
 
+    if(isGameOver) {
+        // gameObjects.gameScrn.classList.add('hidden');
+        // gameObjects.endScrn.classList.remove('hidden');
+        // gameObjects.endScore.textContent = `Score: ${state.score} points`;
 
+        alert('Game Over');
+        return;      
+    }
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
@@ -105,4 +125,10 @@ function areColliding(objectA, objectB) {
     const collision = !isSafeFromTop && !isSafeFromRight && !isSafeFromBottom && !isSafeFromLeft;
 
     return collision;
+}
+
+function killBugAndAddScore(bugElement, state, gameObjects) {
+    bugElement.remove();
+    state.score += 10;
+    gameObjects.scoreboard.textContent = `Score: ${state.score} points`;
 }

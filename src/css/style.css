@@ -25,6 +25,17 @@ body {
     cursor: pointer;
 }
 
+.end-screen {
+    background: #999da061;
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    cursor: pointer;
+    flex-flow: column;
+}
+
 .hidden {
     display:none;
 }
@@ -33,6 +44,14 @@ body {
     background: transparent;
     height: 100%;
     width: 100%;
+}
+
+.score {
+    position: absolute;
+    top: 2vh;
+    width:100vw;
+    text-align: center;
+    font-size: 25px;
 }
 
 .wizard {

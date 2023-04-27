@@ -1,6 +1,7 @@
 function initGameState() {
     const state = {
         score: 0,
+        nextLevel: 100,
         wizard: {
             height:100,
             width:82,

@@ -30,3 +30,12 @@ gameObjects.startScrn.addEventListener('click',function(e){
     startEngine(gameObjects, state);
 })
 
+// gameObjects.endScrn.addEventListener('click', function(e) {
+//     gameObjects.endScrn.classList.add('hidden');
+//     gameObjects.gameScrn.classList.remove('hidden');
+
+//     state = initGameState();
+
+//     startEngine(gameObjects,state);
+// })
+
