@@ -19,8 +19,8 @@ function gameLoop(gameObjects,state,timestamp) {
 
     //Spawn Fireballs
     if(state.keys.Space) {
+        wizardElement.style.backgroundImage = 'url("/src/images/wizard-fire.png")';
         if(timestamp > fireball.nextSpawnTimestamp) {
-            wizardElement.style.backgroundImage = 'url("/src/images/wizard-fire.png")';
             fireball.posX = wizard.posX + wizard.width;
             fireball.posY = wizard.posY + wizard.width/2.5;
             gameObjects.spawnFireball(fireball);
@@ -59,6 +59,18 @@ function gameLoop(gameObjects,state,timestamp) {
         el.style.left = (pos - state.bug.speed) + 'px';
     })
 
+    //Fireball vs Bug collision
+    document.querySelectorAll('.fireball').forEach(fireballElement => {
+        document.querySelectorAll('.bug').forEach(bugElement=> {
+            if(areColliding(fireballElement,bugElement)) {
+                fireballElement.remove();
+                bugElement.remove();
+                return;
+            }
+        })
+    })
+
+
 
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
@@ -79,4 +91,18 @@ function modifyWizardPosition(gameObjects, state) {
     if(state.keys.KeyD){
         wizard.posX = Math.min(wizard.posX + wizard.speed,gameObjects.gameScrn.offsetWidth-(wizard.width));
     }
+}
+
+function areColliding(objectA, objectB) {
+    let first = objectA.getBoundingClientRect();
+    let second = objectB.getBoundingClientRect();
+
+    const isSafeFromTop = first.top > second.bottom;
+    const isSafeFromBottom = first.bottom  < second.top;
+    const isSafeFromLeft = first.left > second.right;
+    const isSafeFromRight = first.right < second.left;
+
+    const collision = !isSafeFromTop && !isSafeFromRight && !isSafeFromBottom && !isSafeFromLeft;
+
+    return collision;
 }
