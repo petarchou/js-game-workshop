@@ -6,29 +6,41 @@ function startEngine(gameObjects, state) {
 
 function gameLoop(gameObjects,state,timestamp) {
 
-    const {wizard} = state;
+    const {wizard, fireball} = state;
     const {wizardElement} = gameObjects;
 
     //Move Wizard
     modifyWizardPosition(gameObjects, state);
 
     
+    //Render Wizard
+    wizardElement.style.left = wizard.posX+'px';
+    wizardElement.style.top = wizard.posY+'px';
 
-    //Throw Fireballs
+    //Spawn Fireballs
     if(state.keys.Space) {
-        wizardElement.style.backgroundImage = 'url("/src/images/wizard-fire.png")';
-        state.fireball.posX = wizard.posX + wizard.width;
-        state.fireball.posY = wizard.posY + wizard.width/2.5;
-        gameObjects.spawnFireball(state.fireball);
+        if(timestamp > fireball.nextSpawnTimestamp) {
+            wizardElement.style.backgroundImage = 'url("/src/images/wizard-fire.png")';
+            fireball.posX = wizard.posX + wizard.width;
+            fireball.posY = wizard.posY + wizard.width/2.5;
+            gameObjects.spawnFireball(fireball);
+            
+            fireball.nextSpawnTimestamp = timestamp + fireball.timeBetweenAttacks;
+        }
     }
     else {
         wizardElement.style.backgroundImage = 'url("/src/images/wizard.png")';
     }
 
+    //Render Fireballs
+    document.querySelectorAll('.fireball').forEach(fireballElement => {
+        const pos = parseInt(fireballElement.style.left);
+        if(pos >= gameObjects.gameScrn.offsetWidth-fireball.width) {
+            fireballElement.remove();
+        }
+        fireballElement.style.left = (pos+fireball.projectileSpeed)+'px';
+    });
 
-    //Render Wizard
-    wizardElement.style.left = wizard.posX+'px';
-    wizardElement.style.top = wizard.posY+'px';
 
     //Spawn bugs
     if(timestamp > state.bug.nextSpawnTimestamp) {

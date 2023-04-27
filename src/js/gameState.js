@@ -20,7 +20,7 @@ function initGameState() {
                 this.height *= n;
             },
             nextSpawnTimestamp: 0,
-            spawnDelay: 500,
+            spawnDelay: 1000,
             speed: 5,
         },
         fireball: {
@@ -28,6 +28,7 @@ function initGameState() {
             width: 25,
             projectileSpeed: 5,
             timeBetweenAttacks: 500,
+            nextSpawnTimestamp: 0,
         },
 
         keys: {

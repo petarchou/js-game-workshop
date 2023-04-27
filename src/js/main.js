@@ -13,7 +13,6 @@ document.addEventListener('keydown',(e)=>{
     // console.log(e.code);
     if(validKeys.includes(e.code)){
         state.keys[e.code] = true;
-        console.log(e.code);
     }
 })
 document.addEventListener('keyup',(e)=>{
