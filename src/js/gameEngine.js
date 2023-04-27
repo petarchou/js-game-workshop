@@ -1,7 +1,7 @@
 function startEngine(gameObjects, state) {
-    state.wizard.scale = 1.2;
+    state.wizard.scale = 1;
     gameObjects.createWizard(state.wizard);
-    window.requestAnimationFrame(timestamp => gameLoop(gameObjects,state,timestamp));
+    window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
 function gameLoop(gameObjects,state,timestamp) {
@@ -11,6 +11,16 @@ function gameLoop(gameObjects,state,timestamp) {
 
     //Move Wizard
     modifyWizardPosition(gameObjects, state);
+
+    
+
+    //Throw Fireballs
+    if(state.keys.Space) {
+        wizardElement.style.backgroundImage = 'url("/src/images/wizard-fire.png")';
+    }
+    else {
+        wizardElement.style.backgroundImage = 'url("/src/images/wizard.png")';
+    }
 
 
     //Render Wizard

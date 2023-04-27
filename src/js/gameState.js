@@ -28,6 +28,7 @@ function initGameState() {
             keyA : false,
             keyS : false,
             keyD : false,
+            Space : false,
         },
 
     }
