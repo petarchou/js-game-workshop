@@ -24,7 +24,7 @@ function gameLoop(gameObjects,state,timestamp) {
             fireball.posX = wizard.posX + wizard.width;
             fireball.posY = wizard.posY + wizard.width/2.5;
             gameObjects.spawnFireball(fireball);
-            
+
             fireball.nextSpawnTimestamp = timestamp + fireball.timeBetweenAttacks;
         }
     }
@@ -35,7 +35,7 @@ function gameLoop(gameObjects,state,timestamp) {
     //Render Fireballs
     document.querySelectorAll('.fireball').forEach(fireballElement => {
         const pos = parseInt(fireballElement.style.left);
-        if(pos >= gameObjects.gameScrn.offsetWidth-fireball.width) {
+        if(pos >= gameObjects.gameScrn.offsetWidth) {
             fireballElement.remove();
         }
         fireballElement.style.left = (pos+fireball.projectileSpeed)+'px';
