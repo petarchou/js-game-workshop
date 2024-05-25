@@ -1,6 +1,4 @@
 function startEngine(gameObjects, state) {
-    state.wizard.scale = 1;
-    gameObjects.createWizard(state.wizard);
     const canvas = gameObjects.createCharacterCanvas(state.character)
     canvas.style.border = '5px black solid'
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
@@ -35,7 +33,14 @@ function gameLoop(gameObjects,state,timestamp) {
         window.requestAnimationFrame(gameLoop.bind(this, gameObjects, state));
         return;
     }
-    let isGameOver = false;
+    if (state.isGameOver) {
+        alert('Game Over');
+        gameObjects.gameScrn.classList.add('hidden');
+        gameObjects.endScrn.classList.remove('hidden');
+        return; 
+    }
+
+
     if(state.score >= state.nextLevel) {
         state.bug.speed +=0.5;
         state.bug.spawnDelay *= 0.9
@@ -43,8 +48,7 @@ function gameLoop(gameObjects,state,timestamp) {
         state.nextLevel += 100;
     }
 
-    const {wizard, fireball, character} = state;
-    const {wizardElement} = gameObjects;
+    const {fireball, character} = state;
     const {characterCanvas} = gameObjects
 
     character.changedState = false
@@ -69,9 +73,6 @@ function gameLoop(gameObjects,state,timestamp) {
 
             fireball.nextSpawnTimestamp = timestamp + fireball.timeBetweenAttacks;
         }
-    }
-    else {
-        wizardElement.style.backgroundImage = 'url("/images/wizard.png")';
     }
 
     //Render Fireballs
@@ -116,19 +117,16 @@ function gameLoop(gameObjects,state,timestamp) {
     // //Character vs Bug Collision (Game Over)
     // document.querySelectorAll('.bug').forEach(bugElement=> {
     //     if(areColliding(wizardElement,bugElement)) {
-    //         isGameOver = true;
+    //         state.isGameOver = true;
     //         return;
     //     }
     // })
 
-    if(isGameOver) {
-        // gameObjects.gameScrn.classList.add('hidden');
-        // gameObjects.endScrn.classList.remove('hidden');
-        // gameObjects.endScore.textContent = `Score: ${state.score} points`;
-
-        alert('Game Over');
-        return;      
-    }
+    // if(isGameOver) {
+    //     // gameObjects.gameScrn.classList.add('hidden');
+    //     // gameObjects.endScrn.classList.remove('hidden');
+    //     // gameObjects.endScore.textContent = `Score: ${state.score} points`;     
+    // }
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
@@ -139,6 +137,7 @@ function modifyCharacterPosition(gameObjects, state) {
     let isNowMoving = false;
 
     if(state.keys.KeyW) {
+        //this 0 is hard-coded and prevents me from putting a smaller screen
         character.posY = Math.max(character.posY - character.speed,0);
         isNowMoving = true
     }
@@ -196,9 +195,7 @@ function animateCharacter(state, characterCanvas) {
     const {character} = state
     if(character.isMoving && character.changedState) {
         setWalkingImage(state)
-        console.log('setting walking image')
     } else if (!character.isMoving && character.changedState) {
-        console.log('setting idle image')
         setIdleImage(state)
     }
     const ctx = characterCanvas.getContext('2d')
