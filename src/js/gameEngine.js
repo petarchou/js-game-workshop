@@ -1,35 +1,70 @@
 function startEngine(gameObjects, state) {
     state.wizard.scale = 1;
     gameObjects.createWizard(state.wizard);
+    const canvas = gameObjects.createCharacterCanvas(state.character)
+    canvas.style.border = '5px black solid'
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
+    //call character animation start here
 }
 
+/*
+
+character state:
+- playerSprite (object)
+- spriteTotalFrames (spriteWidth % 128)
+- frameHeight
+- frameWidth
+- currentFrame (0 - spriteTotalFrames)
+- animationDuration
+- canvasWidth (determines character width)
+- canvasHeight (determines character height)
+- 
+
+character created - initially idle
+- whenever idle (no move / attack), needs to be animating idling
+- whenever moving, needs to be walking
+
+so animations need to always be running, the things that change are:
+1. the character sprite
+2. the speed of animation
+
+*/
+
 function gameLoop(gameObjects,state,timestamp) {
+    if (state.paused) {
+        window.requestAnimationFrame(gameLoop.bind(this, gameObjects, state));
+        return;
+    }
     let isGameOver = false;
-    // if(state.score >= state.nextLevel) {
-    //     state.bug.speed +=2;
-    //     console.log('levelUp');
+    if(state.score >= state.nextLevel) {
+        state.bug.speed +=0.5;
+        state.bug.spawnDelay *= 0.9
+        console.log('levelUp');
+        state.nextLevel += 100;
+    }
 
-    //     state.nextLevel += 100;
-    // }
-
-    const {wizard, fireball} = state;
+    const {wizard, fireball, character} = state;
     const {wizardElement} = gameObjects;
+    const {characterCanvas} = gameObjects
 
-    //Move Wizard
-    modifyWizardPosition(gameObjects, state);
+    character.changedState = false
 
+    //Change character pos state
+    modifyCharacterPosition(gameObjects, state);
+
+
+    animateCharacter(state, characterCanvas)
     
-    //Render Wizard
-    wizardElement.style.left = wizard.posX+'px';
-    wizardElement.style.top = wizard.posY+'px';
+    //Render Character At Current Position
+    characterCanvas.style.left = character.posX+'px';
+    characterCanvas.style.top = character.posY+'px';
 
     //Spawn Fireballs
     if(state.keys.Space) {
-        wizardElement.style.backgroundImage = 'url("/images/wizard-fire.png")';
+        setAttackImage(state)
         if(timestamp > fireball.nextSpawnTimestamp) {
-            fireball.posX = wizard.posX + wizard.width;
-            fireball.posY = wizard.posY + wizard.width/2.5;
+            fireball.posX = character.posX + character.frameWidth;
+            fireball.posY = character.posY + character.frameWidth/1.2;
             gameObjects.spawnFireball(fireball);
 
             fireball.nextSpawnTimestamp = timestamp + fireball.timeBetweenAttacks;
@@ -49,40 +84,42 @@ function gameLoop(gameObjects,state,timestamp) {
     });
 
 
-    //Spawn bugs
-    if(timestamp > state.bug.nextSpawnTimestamp) {
-        gameObjects.spawnBug(state.bug);
-        state.bug.nextSpawnTimestamp = timestamp + state.bug.spawnDelay;
-    }
+    // //Spawn bugs
+    // if(timestamp > state.bug.nextSpawnTimestamp) {
+    //     gameObjects.spawnBug(state.bug);
+    //     state.bug.nextSpawnTimestamp = timestamp + state.bug.spawnDelay;
+    // }
 
-    //Render bugs
+    // //Render bugs
 
-    document.querySelectorAll('.bug').forEach(bugElement => {
-        const pos = parseInt(bugElement.style.left);
-        if(pos < -state.bug.width) {
-            killBugAndAddScore(bugElement,state, gameObjects);
-            return;
-        }
-        bugElement.style.left = (pos - state.bug.speed) + 'px';
-    })
+    // document.querySelectorAll('.bug').forEach(bugElement => {
+    //     const pos = parseInt(bugElement.style.left);
+    //     if(pos < -state.bug.width) {
+    //         killBug(bugElement)
+    //         addScore(state, gameObjects);
+    //         return;
+    //     }
+    //     bugElement.style.left = (pos - state.bug.speed) + 'px';
+    // })
 
-    //Fireball vs Bug collision
-    document.querySelectorAll('.fireball').forEach(fireballElement => {
-        document.querySelectorAll('.bug').forEach(bugElement=> {
-            if(areColliding(fireballElement,bugElement)) {
-                fireballElement.remove();
-                killBugAndAddScore(bugElement,state, gameObjects);    
-            }
-        })
-    })
+    // //Fireball vs Bug collision
+    // document.querySelectorAll('.fireball').forEach(fireballElement => {
+    //     document.querySelectorAll('.bug').forEach(bugElement=> {
+    //         if(areColliding(fireballElement,bugElement)) {
+    //             fireballElement.remove();
+    //             killBug(bugElement);    
+    //             addScore(state, gameObjects);    
+    //         }
+    //     })
+    // })
 
-    //Character vs Bug Collision (Game Over)
-    document.querySelectorAll('.bug').forEach(bugElement=> {
-        if(areColliding(wizardElement,bugElement)) {
-            isGameOver = true;
-            return;
-        }
-    })
+    // //Character vs Bug Collision (Game Over)
+    // document.querySelectorAll('.bug').forEach(bugElement=> {
+    //     if(areColliding(wizardElement,bugElement)) {
+    //         isGameOver = true;
+    //         return;
+    //     }
+    // })
 
     if(isGameOver) {
         // gameObjects.gameScrn.classList.add('hidden');
@@ -95,21 +132,40 @@ function gameLoop(gameObjects,state,timestamp) {
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
-function modifyWizardPosition(gameObjects, state) {
+function modifyCharacterPosition(gameObjects, state) {
 
-    const {wizard} = state;
+    const {character} = state;
+
+    let isNowMoving = false;
 
     if(state.keys.KeyW) {
-        wizard.posY = Math.max(wizard.posY - wizard.speed,0);
+        character.posY = Math.max(character.posY - character.speed,0);
+        isNowMoving = true
     }
     if(state.keys.KeyA){
-        wizard.posX = Math.max(wizard.posX - wizard.speed,0);
+        character.posX = Math.max(character.posX - character.speed,0);
+        isNowMoving = true
     }
     if(state.keys.KeyS) {
-        wizard.posY = Math.min(wizard.posY + wizard.speed,gameObjects.gameScrn.offsetHeight-(wizard.height));
+        //to be replaced with the frame size
+        character.posY = Math.min(character.posY + character.speed,gameObjects.gameScrn.offsetHeight-(character.canvasHeight));
+        isNowMoving = true
     }
     if(state.keys.KeyD){
-        wizard.posX = Math.min(wizard.posX + wizard.speed,gameObjects.gameScrn.offsetWidth-(wizard.width));
+        character.posX = Math.min(character.posX + character.speed,gameObjects.gameScrn.offsetWidth-(character.canvasWidth));
+        isNowMoving = true
+    }
+
+    characterStateChange(character, isNowMoving)
+}
+
+function characterStateChange(character, isNowMoving) {
+    if (isNowMoving && !character.isMoving) {
+        character.isMoving = true
+        character.changedState = true
+    } else if(!isNowMoving && character.isMoving) {
+        character.isMoving = false;
+        character.changedState = true;
     }
 }
 
@@ -127,8 +183,56 @@ function areColliding(objectA, objectB) {
     return collision;
 }
 
-function killBugAndAddScore(bugElement, state, gameObjects) {
+function killBug(bugElement) {
     bugElement.remove();
+}
+
+function addScore(state, gameObjects) {
     state.score += 10;
     gameObjects.scoreboard.textContent = `Score: ${state.score} points`;
+}
+
+function animateCharacter(state, characterCanvas) {
+    const {character} = state
+    if(character.isMoving && character.changedState) {
+        setWalkingImage(state)
+        console.log('setting walking image')
+    } else if (!character.isMoving && character.changedState) {
+        console.log('setting idle image')
+        setIdleImage(state)
+    }
+    const ctx = characterCanvas.getContext('2d')
+    ctx.clearRect(0, 0, character.canvasWidth, character.canvasHeight)
+    // ctx.fillRect(50, 50, 100, 100)
+    const currentFrameWidth = character.currentFrame * character.frameWidth
+    ctx.drawImage(character.playerImage, currentFrameWidth ,0 , character.frameWidth, character.frameHeight, 0, 0, character.canvasWidth, character.canvasHeight)
+
+    rollThroughSprite(character, characterCanvas)
+}
+
+
+function rollThroughSprite(state) {
+    state.animationCounter++
+    if(state.animationCounter % state.animationDuration == 0) {
+        state.currentFrame+=1;
+    }
+    //0-indexed
+    if(state.currentFrame >= state.imageTotalFrames) {
+        state.currentFrame = 0
+        state.counter = 0
+    }
+}
+
+function getAnimationCounter() {
+    let counter = 0
+
+    function getCounter() {
+        return counter
+    }
+
+    function incrementCounter() {
+        counter++
+    }
+
+    return {get}
 }
