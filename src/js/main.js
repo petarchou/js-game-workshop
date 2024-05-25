@@ -9,6 +9,11 @@ const validKeys = [
     'Space',
 ]
 
+// to move in game engine when I implement level pausing
+function togglePause(state) {
+    state.paused = !state.paused;
+}
+
 document.addEventListener('keydown',(e)=>{
     // console.log(e.code);
     if(validKeys.includes(e.code)){
@@ -20,6 +25,12 @@ document.addEventListener('keyup',(e)=>{
         state.keys[e.code] = false;
     }
 })
+
+document.addEventListener('keydown', (event) => {
+    if (event.code === 'Escape') {
+        togglePause(state);
+    }
+});
 
 gameObjects.startScrn.addEventListener('click',function(e){
     gameObjects.startScrn.classList.add('hidden');
