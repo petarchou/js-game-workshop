@@ -23,6 +23,21 @@ function getGameObjects() {
         return wizard;
     }
 
+    const createCharacterCanvas = function(initialState) {
+        const canvas = document.createElement('canvas')
+        canvas.classList.add('character')
+        canvas.width = initialState.canvasWidth
+        canvas.height = initialState.canvasHeight
+        canvas.style.top = initialState.posY + 'px';
+        canvas.style.left = initialState.posX + 'px';
+
+        gameScrn.append(canvas)
+
+        this.characterCanvas = canvas
+
+        return canvas
+    }
+
     const spawnBug = function(initialState) {
         const bugElement = document.createElement('span');
         bugElement.classList.add('bug');
@@ -64,5 +79,6 @@ function getGameObjects() {
         createWizard,
         spawnBug,
         spawnFireball,
+        createCharacterCanvas,
     };
 }
