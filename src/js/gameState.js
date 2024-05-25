@@ -47,6 +47,14 @@ function initGameState() {
             timeBetweenAttacks: 500,
             nextSpawnTimestamp: 0,
         },
+        shuriken: {
+            height: 25,
+            width: 25,
+            projectileSpeed: 5,
+            timeBetweenAttacks: 500,
+            nextSpawnTimestamp: 0,
+        },
+
 
         keys: {
             keyW : false,
@@ -72,7 +80,7 @@ function setIdleImage(state) {
     const {character} = state
     character.playerImage.src = 'images/Idle.png'
     character.currentFrame = 0
-    character.animationDuration = 20
+    character.animationDuration = 10
     character.animationCounter = 0
     character.imageTotalFrames = 6
 }
@@ -81,7 +89,7 @@ function setWalkingImage(state) {
     const {character} = state
     character.playerImage.src = 'images/Walk.png'
     character.currentFrame = 0
-    character.animationDuration = 20
+    character.animationDuration = 7
     character.animationCounter = 0
     character.imageTotalFrames = 8
 }
@@ -90,7 +98,7 @@ function setAttackImage(state) {
     const {character} = state
     character.playerImage.src = 'images/Attack_1.png'
     character.currentFrame = 0
-    character.animationDuration = 15
+    character.animationDuration = 5
     character.animationCounter = 0
     character.imageTotalFrames = 4
 }

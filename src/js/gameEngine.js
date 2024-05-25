@@ -1,4 +1,5 @@
 function startEngine(gameObjects, state) {
+    renderScore(gameObjects, state)
     const canvas = gameObjects.createCharacterCanvas(state.character)
     // canvas.style.border = '1px black solid'
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
@@ -34,10 +35,11 @@ function gameLoop(gameObjects,state,timestamp) {
         return;
     }
     if (state.isGameOver) {
-        alert('Game Over');
-        gameObjects.gameScrn.classList.add('hidden');
-        gameObjects.endScrn.classList.remove('hidden');
-        return; 
+        alert('Game Over')
+        gameObjects.gameScrn.classList.add('hidden')
+        gameObjects.endScrn.classList.remove('hidden')
+        cleanUpGameScreen(gameObjects)
+        return
     }
 
 
@@ -67,9 +69,12 @@ function gameLoop(gameObjects,state,timestamp) {
     if(state.keys.Space) {
         setAttackImage(state)
         if(timestamp > fireball.nextSpawnTimestamp) {
-            fireball.posX = character.posX + character.frameWidth;
-            fireball.posY = character.posY + character.frameWidth/1.2;
-            gameObjects.spawnFireball(fireball);
+            setTimeout(() => {
+                fireball.posX = character.posX + character.frameWidth - 55;
+                fireball.posY = character.posY + character.frameHeight/2;
+                gameObjects.spawnFireball(fireball)
+            }, 250)
+            
 
             fireball.nextSpawnTimestamp = timestamp + fireball.timeBetweenAttacks;
         }
@@ -139,9 +144,6 @@ function modifyCharacterPositionState(gameObjects, state) {
     let isNowMoving = false;
 
     if(state.keys.KeyW) {
-        console.log(elementRect)
-        console.log(elementRect.bottom)
-        console.log(gameObjects.gameScrn.clientHeight)
         //this 0 is hard-coded and prevents me from putting a smaller screen
         character.posY = Math.max(character.posY - character.speed, -44);
         isNowMoving = true
@@ -151,13 +153,10 @@ function modifyCharacterPositionState(gameObjects, state) {
         isNowMoving = true
     }
     if(state.keys.KeyS) {
-        //to be replaced with the frame 
-        console.log(gameObjects.gameScrn.offsetHeight)
         character.posY = Math.min(character.posY + character.speed, gameObjects.gameScrn.clientHeight - character.frameWidth);
         isNowMoving = true
     }
     if(state.keys.KeyD){
-        console.log(gameObjects.gameScrn.offsetWidth)
         character.posX = Math.min(character.posX + character.speed, gameObjects.gameScrn.clientWidth - 77);
         isNowMoving = true
     }
@@ -195,6 +194,10 @@ function killBug(bugElement) {
 
 function addScore(state, gameObjects) {
     state.score += 10;
+    renderScore(gameObjects, state)
+}
+
+function renderScore(gameObjects, state) {
     gameObjects.scoreboard.textContent = `Score: ${state.score} points`;
 }
 
@@ -222,19 +225,21 @@ function animateCharacter(state, characterCanvas) {
         centerX, centerY,
         character.frameWidth, character.frameHeight)
 
-    rollThroughSprite(character, characterCanvas)
+    rollThroughSprite(state)
 }
 
 
 function rollThroughSprite(state) {
-    state.animationCounter++
-    if(state.animationCounter % state.animationDuration == 0) {
-        state.currentFrame+=1;
+
+    const {character} = state
+    character.animationCounter++
+    if(character.animationCounter % character.animationDuration == 0) {
+        character.currentFrame+=1;
     }
     //0-indexed
-    if(state.currentFrame >= state.imageTotalFrames) {
-        state.currentFrame = 0
-        state.counter = 0
+    if(character.currentFrame >= character.imageTotalFrames) {
+        character.currentFrame = 0
+        character.counter = 0
     }
 }
 
@@ -252,7 +257,14 @@ function getAnimationCounter() {
     return {get}
 }
 
-function renderCharacter(characterCanvas, character) {
-    console.log('rendering')
-        
+function cleanUpGameScreen(gameObjects) {
+    const {gameScrn} = gameObjects
+
+        const gameScrnElements = gameScrn.children
+        for(i = 0; i < gameScrnElements.length; i++) {
+            const el = gameScrnElements[i]
+            if (!el.classList.contains('score')) {
+                el.remove()
+            }
+        }
 }

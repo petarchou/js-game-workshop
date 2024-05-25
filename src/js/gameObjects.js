@@ -2,8 +2,9 @@ function initGameObjects() {
     const startScrn = document.querySelector('.start-screen');
     const gameScrn = document.querySelector('.game-screen');
     const endScrn = document.querySelector('.end-screen');
-    const scoreboard = document.querySelector('.score');
+    const scoreboard = createScoreboard(gameScrn)
     const endScore = document.querySelector('.end-score');
+
 
     const createWizard = function(initialState) {
         let wizard = document.createElement('span');
@@ -65,9 +66,23 @@ function initGameObjects() {
         fireballElement.style.left = initialState.posX +'px';
 
         gameScrn.append(fireballElement);
-        this.fireballElement = fireballElement;
 
         return fireballElement;
+    }
+
+
+    const spawnShuriken = function(initialState) {
+        const {shuriken} = initialState
+        const shurikenEl = document.createElement('canvas')
+        shurikenEl.classList.add('shuriken')
+        shurikenEl.style.width = shuriken.width
+        shurikenEl.style.height = shuriken.height
+
+        shurikenEl.style.top = shuriken.posY + 'px'
+        shurikenEl.style.left = shuriken.posX + 'px'
+        gameScrn.append(fireballElement);
+
+        return shurikenEl
     }
 
     return {
@@ -81,4 +96,18 @@ function initGameObjects() {
         spawnFireball,
         createCharacterCanvas,
     };
+}
+
+
+function createScoreboard(gameScrn) {
+    let scoreboard = document.querySelector('.score')
+    console.log(scoreboard)
+
+    if (!scoreboard) {
+        scoreboard = document.createElement('div')
+        scoreboard.classList.add('score')
+        gameScrn.appendChild(scoreboard)
+    }
+
+    return scoreboard
 }
