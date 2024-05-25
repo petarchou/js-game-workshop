@@ -1,6 +1,6 @@
 function startEngine(gameObjects, state) {
     const canvas = gameObjects.createCharacterCanvas(state.character)
-    canvas.style.border = '5px black solid'
+    // canvas.style.border = '1px black solid'
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
     //call character animation start here
 }
@@ -54,14 +54,14 @@ function gameLoop(gameObjects,state,timestamp) {
     character.changedState = false
 
     //Change character pos state
-    modifyCharacterPosition(gameObjects, state);
-
+    modifyCharacterPositionState(gameObjects, state);
 
     animateCharacter(state, characterCanvas)
     
     //Render Character At Current Position
-    characterCanvas.style.left = character.posX+'px';
-    characterCanvas.style.top = character.posY+'px';
+    characterCanvas.style.left = character.posX+'px'
+    characterCanvas.style.top = character.posY+'px'
+    // renderCharacter(characterCanvas, character);
 
     //Spawn Fireballs
     if(state.keys.Space) {
@@ -130,28 +130,35 @@ function gameLoop(gameObjects,state,timestamp) {
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
-function modifyCharacterPosition(gameObjects, state) {
+function modifyCharacterPositionState(gameObjects, state) {
 
     const {character} = state;
+    const elementRect = gameObjects.gameScrn.getBoundingClientRect();
+
 
     let isNowMoving = false;
 
     if(state.keys.KeyW) {
+        console.log(elementRect)
+        console.log(elementRect.bottom)
+        console.log(gameObjects.gameScrn.clientHeight)
         //this 0 is hard-coded and prevents me from putting a smaller screen
-        character.posY = Math.max(character.posY - character.speed,0);
+        character.posY = Math.max(character.posY - character.speed, -44);
         isNowMoving = true
     }
     if(state.keys.KeyA){
-        character.posX = Math.max(character.posX - character.speed,0);
+        character.posX = Math.max(character.posX - character.speed, -40);
         isNowMoving = true
     }
     if(state.keys.KeyS) {
-        //to be replaced with the frame size
-        character.posY = Math.min(character.posY + character.speed,gameObjects.gameScrn.offsetHeight-(character.canvasHeight));
+        //to be replaced with the frame 
+        console.log(gameObjects.gameScrn.offsetHeight)
+        character.posY = Math.min(character.posY + character.speed, gameObjects.gameScrn.clientHeight - character.frameWidth);
         isNowMoving = true
     }
     if(state.keys.KeyD){
-        character.posX = Math.min(character.posX + character.speed,gameObjects.gameScrn.offsetWidth-(character.canvasWidth));
+        console.log(gameObjects.gameScrn.offsetWidth)
+        character.posX = Math.min(character.posX + character.speed, gameObjects.gameScrn.clientWidth - 77);
         isNowMoving = true
     }
 
@@ -198,11 +205,22 @@ function animateCharacter(state, characterCanvas) {
     } else if (!character.isMoving && character.changedState) {
         setIdleImage(state)
     }
+
+
     const ctx = characterCanvas.getContext('2d')
     ctx.clearRect(0, 0, character.canvasWidth, character.canvasHeight)
-    // ctx.fillRect(50, 50, 100, 100)
+
+
+    const centerX = character.canvasWidth / 2 - character.frameWidth / 2;
+    const centerY = character.canvasHeight / 2 - character.frameHeight / 2;
+
     const currentFrameWidth = character.currentFrame * character.frameWidth
-    ctx.drawImage(character.playerImage, currentFrameWidth ,0 , character.frameWidth, character.frameHeight, 0, 0, character.canvasWidth, character.canvasHeight)
+
+    ctx.drawImage(character.playerImage,
+        currentFrameWidth, 0,
+        character.frameWidth, character.frameHeight,
+        centerX, centerY,
+        character.frameWidth, character.frameHeight)
 
     rollThroughSprite(character, characterCanvas)
 }
@@ -232,4 +250,9 @@ function getAnimationCounter() {
     }
 
     return {get}
+}
+
+function renderCharacter(characterCanvas, character) {
+    console.log('rendering')
+        
 }

@@ -1,4 +1,4 @@
-function getGameObjects() {
+function initGameObjects() {
     const startScrn = document.querySelector('.start-screen');
     const gameScrn = document.querySelector('.game-screen');
     const endScrn = document.querySelector('.end-screen');
@@ -28,8 +28,8 @@ function getGameObjects() {
         canvas.classList.add('character')
         canvas.width = initialState.canvasWidth
         canvas.height = initialState.canvasHeight
-        canvas.style.top = initialState.posY + 'px';
-        canvas.style.left = initialState.posX + 'px';
+        state.character.posX = canvas.style.left
+        state.character.posY = canvas.style.top
 
         gameScrn.append(canvas)
 

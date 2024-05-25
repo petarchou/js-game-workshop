@@ -10,8 +10,8 @@ function initGameState() {
             animationCounter: 0,
             frameWidth: 128,
             frameHeight: 128,
-            canvasWidth: 200,
-            canvasHeight: 200,
+            canvasWidth: 128,
+            canvasHeight: 128,
             posX: 300,
             posY: 200,
             speed: 5,
@@ -57,6 +57,7 @@ function initGameState() {
         },
 
         paused: false,
+        isGameOver: false,
 
     }
 

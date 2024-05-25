@@ -7,13 +7,23 @@
 body {
     font-family: 'Consolas';
     overflow:hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ensure the body takes the full viewport height */
+}
+
+.game > div {
+    position: relative;
 }
 
 .game {
-    width: 100vw;
-    height: 100vh;
-    background: #aaddfc;
-} 
+    /* display: flex; */
+    /* flex-direction: column; */
+
+    width: 60vw;
+    height: 50vh;
+}
 
 .start-screen {
     background: #999da061;
@@ -21,7 +31,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: inherit;
     cursor: pointer;
 }
 
@@ -31,7 +41,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: inherit;
     cursor: pointer;
     flex-flow: column;
 }
@@ -42,14 +52,15 @@ body {
 
 .game-screen {
     background: transparent;
-    height: 100%;
-    width: 100%;
+    height: inherit;
+    width: inherit;
+    background: #aaddfc;
 }
 
 .score {
-    position: absolute;
+    position: absolute; 
     top: 2vh;
-    width:100vw;
+    width: inherit;
     text-align: center;
     font-size: 25px;
 }
