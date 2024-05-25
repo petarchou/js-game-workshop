@@ -1,7 +1,7 @@
 let state = initGameState();
-let gameObjects = getGameObjects();
+let gameObjects = initGameObjects();
 
-const validKeys = [
+const characterKeys = [
     'KeyW',
     'KeyA',
     'KeyS',
@@ -9,44 +9,73 @@ const validKeys = [
     'Space',
 ]
 
-// to move in game engine when I implement level pausing
-function togglePause(state) {
-    state.paused = !state.paused;
+//Game Setup
+addGameControls()
+startGameLogic()
+restartGameLogic()
+
+
+
+
+//Functions
+function addGameControls() {
+    // Movement
+    document.addEventListener('keydown',(e)=>{
+        if(characterKeys.includes(e.code)){
+            state.keys[e.code] = true;
+        }
+    })
+    document.addEventListener('keyup',(e)=>{
+        if(characterKeys.includes(e.code)) {
+            state.keys[e.code] = false;
+        }
+    })
+
+    // Pause game
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Escape') {
+            togglePause(state);
+        }
+    });
+
+
+    //Debugging
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Digit2') {
+            state.isGameOver= true
+        }
+    });
 }
 
-document.addEventListener('keydown',(e)=>{
-    // console.log(e.code);
-    if(validKeys.includes(e.code)){
-        state.keys[e.code] = true;
-    }
-})
-document.addEventListener('keyup',(e)=>{
-    if(validKeys.includes(e.code)) {
-        state.keys[e.code] = false;
-    }
-})
+// to move in game engine when I implement level pausing
+function togglePause(state) {
+    state.paused = !state.paused
+}
 
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'Escape') {
-        togglePause(state);
-    }
-});
+function startGameLogic() {
+    gameObjects.startScrn.addEventListener('click',function(e){
+        gameObjects.startScrn.classList.add('hidden')
+        gameObjects.gameScrn.classList.remove('hidden')
+    
+    
+        //start game
+        startEngine(gameObjects, state);
+    })
+}
 
-gameObjects.startScrn.addEventListener('click',function(e){
-    gameObjects.startScrn.classList.add('hidden');
-    gameObjects.gameScrn.classList.remove('hidden');
+function restartGameLogic() {
+    gameObjects.endScrn.addEventListener('click',function(e){
+        gameObjects.startScrn.classList.add('hidden')
+        gameObjects.gameScrn.classList.remove('hidden')
+        gameObjects.endScrn.classList.add('hidden')
+        restartGameState()
+    
+        //start game
+        startEngine(gameObjects, state)
+    })
+}
 
-
-    //start game
-    startEngine(gameObjects, state);
-})
-
-// gameObjects.endScrn.addEventListener('click', function(e) {
-//     gameObjects.endScrn.classList.add('hidden');
-//     gameObjects.gameScrn.classList.remove('hidden');
-
-//     state = initGameState();
-
-//     startEngine(gameObjects,state);
-// })
-
+function restartGameState() {
+    state = initGameState()
+    gameObjects = initGameObjects()
+}
