@@ -61,6 +61,11 @@ body {
     position:absolute;
 }
 
+.character {
+    position: absolute;
+}
+
+
 .bug {
     position: absolute;
     background: url('/images/bug.png');
