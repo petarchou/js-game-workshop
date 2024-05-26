@@ -47,19 +47,6 @@ function initGameState() {
             timeBetweenAttacks: 500,
             nextSpawnTimestamp: 0,
         },
-        shuriken: {
-            image: createShurikenImage(),
-            height: 25,
-            width: 25,
-            projectileSpeed: 5,
-            timeBetweenAttacks: 500,
-            nextSpawnTimestamp: 0,
-            animationDuration: 5,
-            animationCounter: 0,
-            imageTotalFrames: 4,
-            currentFrame: 0,
-        },
-
 
         keys: {
             keyW : false,
@@ -108,9 +95,4 @@ function setAttackImage(state) {
     character.imageTotalFrames = 4
 }
 
-function createShurikenImage() {
-    const image = new Image()
-    image.src = 'images/SawBladeSuriken.png'
-    return image
-}
 

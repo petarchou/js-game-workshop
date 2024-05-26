@@ -70,21 +70,6 @@ function initGameObjects() {
         return fireballElement;
     }
 
-
-    const spawnShuriken = function(state) {
-        const {shuriken} = state
-        const shurikenEl = document.createElement('canvas')
-        shurikenEl.classList.add('shuriken')
-        // shurikenEl.width = shuriken.width
-        // shurikenEl.height = shuriken.height
-
-        shurikenEl.style.top = shuriken.posY + 'px'
-        shurikenEl.style.left = shuriken.posX + 'px'
-        gameScrn.append(shurikenEl)
-
-        return shurikenEl
-    }
-
     return {
         startScrn,
         gameScrn,
