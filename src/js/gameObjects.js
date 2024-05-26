@@ -79,7 +79,6 @@ function initGameObjects() {
         createWizard,
         spawnBug,
         spawnFireball,
-        spawnShuriken,
         createCharacterCanvas,
     };
 }
