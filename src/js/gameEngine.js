@@ -1,33 +1,8 @@
 function startEngine(gameObjects, state) {
     renderScore(gameObjects, state)
     const canvas = gameObjects.createCharacterCanvas(state.character)
-    // canvas.style.border = '1px black solid'
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
-    //call character animation start here
 }
-
-/*
-
-character state:
-- playerSprite (object)
-- spriteTotalFrames (spriteWidth % 128)
-- frameHeight
-- frameWidth
-- currentFrame (0 - spriteTotalFrames)
-- animationDuration
-- canvasWidth (determines character width)
-- canvasHeight (determines character height)
-- 
-
-character created - initially idle
-- whenever idle (no move / attack), needs to be animating idling
-- whenever moving, needs to be walking
-
-so animations need to always be running, the things that change are:
-1. the character sprite
-2. the speed of animation
-
-*/
 
 function gameLoop(gameObjects,state,timestamp) {
     if (state.paused) {
@@ -36,9 +11,9 @@ function gameLoop(gameObjects,state,timestamp) {
     }
     if (state.isGameOver) {
         alert('Game Over')
-        gameObjects.gameScrn.classList.add('hidden')
-        gameObjects.endScrn.classList.remove('hidden')
-        cleanUpGameScreen(gameObjects)
+        // gameObjects.gameScrn.classList.add('hidden')
+        // gameObjects.endScrn.classList.remove('hidden')
+        // cleanUpGameScreen(gameObjects)
         return
     }
 
@@ -50,7 +25,7 @@ function gameLoop(gameObjects,state,timestamp) {
         state.nextLevel += 100;
     }
 
-    const {fireball, character} = state;
+    const {fireball, shuriken, character} = state;
     const {characterCanvas} = gameObjects
 
     character.changedState = false
@@ -75,7 +50,6 @@ function gameLoop(gameObjects,state,timestamp) {
                 gameObjects.spawnFireball(fireball)
             }, 250)
             
-
             fireball.nextSpawnTimestamp = timestamp + fireball.timeBetweenAttacks;
         }
     }
@@ -90,55 +64,49 @@ function gameLoop(gameObjects,state,timestamp) {
     });
 
 
-    // //Spawn bugs
-    // if(timestamp > state.bug.nextSpawnTimestamp) {
-    //     gameObjects.spawnBug(state.bug);
-    //     state.bug.nextSpawnTimestamp = timestamp + state.bug.spawnDelay;
-    // }
+    //Spawn bugs
+    if(timestamp > state.bug.nextSpawnTimestamp) {
+        gameObjects.spawnBug(state.bug);
+        state.bug.nextSpawnTimestamp = timestamp + state.bug.spawnDelay;
+    }
 
-    // //Render bugs
+    //Render bugs
 
-    // document.querySelectorAll('.bug').forEach(bugElement => {
-    //     const pos = parseInt(bugElement.style.left);
-    //     if(pos < -state.bug.width) {
-    //         killBug(bugElement)
-    //         addScore(state, gameObjects);
-    //         return;
-    //     }
-    //     bugElement.style.left = (pos - state.bug.speed) + 'px';
-    // })
+    document.querySelectorAll('.bug').forEach(bugElement => {
+        const pos = parseInt(bugElement.style.left);
+        if(pos < -state.bug.width) {
+            killBug(bugElement)
+            addScore(state, gameObjects);
+            return;
+        }
+        bugElement.style.left = (pos - state.bug.speed) + 'px';
+    })
 
-    // //Fireball vs Bug collision
-    // document.querySelectorAll('.fireball').forEach(fireballElement => {
-    //     document.querySelectorAll('.bug').forEach(bugElement=> {
-    //         if(areColliding(fireballElement,bugElement)) {
-    //             fireballElement.remove();
-    //             killBug(bugElement);    
-    //             addScore(state, gameObjects);    
-    //         }
-    //     })
-    // })
+    //Fireball vs Bug collision
+    document.querySelectorAll('.fireball').forEach(fireballElement => {
+        document.querySelectorAll('.bug').forEach(bugElement=> {
+            if(areColliding(fireballElement,bugElement)) {
+                fireballElement.remove();
+                killBug(bugElement);    
+                addScore(state, gameObjects);    
+            }
+        })
+    })
 
-    // //Character vs Bug Collision (Game Over)
-    // document.querySelectorAll('.bug').forEach(bugElement=> {
-    //     if(areColliding(wizardElement,bugElement)) {
-    //         state.isGameOver = true;
-    //         return;
-    //     }
-    // })
+    //Character vs Bug Collision (Game Over)
+    document.querySelectorAll('.bug').forEach(bugElement=> {
+        if(characterIsColiding(characterCanvas,bugElement)) {
+            state.isGameOver = true;
+            return;
+        }
+    })
 
-    // if(isGameOver) {
-    //     // gameObjects.gameScrn.classList.add('hidden');
-    //     // gameObjects.endScrn.classList.remove('hidden');
-    //     // gameObjects.endScore.textContent = `Score: ${state.score} points`;     
-    // }
     window.requestAnimationFrame(gameLoop.bind(this,gameObjects,state));
 }
 
 function modifyCharacterPositionState(gameObjects, state) {
 
     const {character} = state;
-    const elementRect = gameObjects.gameScrn.getBoundingClientRect();
 
 
     let isNowMoving = false;
@@ -174,14 +142,28 @@ function characterStateChange(character, isNowMoving) {
     }
 }
 
-function areColliding(objectA, objectB) {
-    let first = objectA.getBoundingClientRect();
-    let second = objectB.getBoundingClientRect();
+function areColliding(ObjectA, ObjectB) {
+    let first = ObjectA.getBoundingClientRect();
+    let second = ObjectB.getBoundingClientRect();
 
-    const isSafeFromTop = first.top > second.bottom;
-    const isSafeFromBottom = first.bottom  < second.top;
+    const isSafeFromTop = first.top  > second.bottom;
+    const isSafeFromBottom = first.bottom < second.top;
     const isSafeFromLeft = first.left > second.right;
     const isSafeFromRight = first.right < second.left;
+
+    const collision = !isSafeFromTop && !isSafeFromRight && !isSafeFromBottom && !isSafeFromLeft;
+
+    return collision;
+}
+
+function characterIsColiding(character, anotherObj) {
+    let charRect = character.getBoundingClientRect();
+    let second = anotherObj.getBoundingClientRect();
+
+    const isSafeFromTop = charRect.top + 44 > second.bottom;
+    const isSafeFromBottom = charRect.bottom < second.top;
+    const isSafeFromLeft = charRect.left + 40 > second.right;
+    const isSafeFromRight = charRect.right - 58 < second.left;
 
     const collision = !isSafeFromTop && !isSafeFromRight && !isSafeFromBottom && !isSafeFromLeft;
 
@@ -228,6 +210,36 @@ function animateCharacter(state, characterCanvas) {
     rollThroughSprite(state)
 }
 
+// function animateShuriken(state, shurikenCanvas) {
+//     const {shuriken} = state
+//     const ctx = shurikenCanvas.getContext('2d')
+//     ctx.clearRect(0, 0, shuriken.width, shuriken.height)
+
+//     const currentFrameWidth = shuriken.currentFrame * shuriken.frameWidth
+
+//     ctx.drawImage(shuriken.image,
+//         currentFrameWidth, 0,
+//         shuriken.width, shuriken.height,
+//         0, 0,
+//         shuriken.width, shuriken.height)
+    
+//         rollThroughShuriken(state, shurikenCanvas);
+// }
+
+// function rollThroughShuriken(state, shurikenCanvas) {
+//     const {shuriken} = state
+//     shuriken.animationCounter++
+//     if(shuriken.animationCounter % shuriken.animationDuration == 0) {
+//         shuriken.currentFrame+=1;
+//     }
+//     //0-indexed
+//     if(shuriken.currentFrame >= shuriken.imageTotalFrames) {
+//         shuriken.currentFrame = 0
+//         shuriken.animationCounter = 0
+//     }
+//     window.requestAnimationFrame(animateShuriken.bind(this, state, shurikenCanvas))
+// }
+
 
 function rollThroughSprite(state) {
 
@@ -239,22 +251,8 @@ function rollThroughSprite(state) {
     //0-indexed
     if(character.currentFrame >= character.imageTotalFrames) {
         character.currentFrame = 0
-        character.counter = 0
+        character.animationCounter = 0
     }
-}
-
-function getAnimationCounter() {
-    let counter = 0
-
-    function getCounter() {
-        return counter
-    }
-
-    function incrementCounter() {
-        counter++
-    }
-
-    return {get}
 }
 
 function cleanUpGameScreen(gameObjects) {

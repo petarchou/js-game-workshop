@@ -71,16 +71,16 @@ function initGameObjects() {
     }
 
 
-    const spawnShuriken = function(initialState) {
-        const {shuriken} = initialState
+    const spawnShuriken = function(state) {
+        const {shuriken} = state
         const shurikenEl = document.createElement('canvas')
         shurikenEl.classList.add('shuriken')
-        shurikenEl.style.width = shuriken.width
-        shurikenEl.style.height = shuriken.height
+        // shurikenEl.width = shuriken.width
+        // shurikenEl.height = shuriken.height
 
         shurikenEl.style.top = shuriken.posY + 'px'
         shurikenEl.style.left = shuriken.posX + 'px'
-        gameScrn.append(fireballElement);
+        gameScrn.append(shurikenEl)
 
         return shurikenEl
     }
@@ -94,6 +94,7 @@ function initGameObjects() {
         createWizard,
         spawnBug,
         spawnFireball,
+        spawnShuriken,
         createCharacterCanvas,
     };
 }

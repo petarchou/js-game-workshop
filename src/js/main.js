@@ -65,7 +65,6 @@ function startGameLogic() {
 
 function restartGameLogic() {
     gameObjects.endScrn.addEventListener('click',function(e){
-        gameObjects.startScrn.classList.add('hidden')
         gameObjects.gameScrn.classList.remove('hidden')
         gameObjects.endScrn.classList.add('hidden')
         restartGameState()
