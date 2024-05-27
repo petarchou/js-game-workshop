@@ -1,6 +1,8 @@
 let state = initGameState();
 let gameObjects = initGameObjects();
 
+determineSpeed()
+
 const characterKeys = [
     'KeyW',
     'KeyA',

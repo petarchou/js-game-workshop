@@ -1,0 +1,12 @@
+1. Spawn character on the floor
+2. Change enemies sprite
+
+
+3. Finalize the game purpose
+- reach highest score? - increasing speed and spawn rate of enemies, potentially newer enemies
+- and/or don't let enemies pass behind you - implement lives system
+
+
+Optional:
+
+- Death animation on character

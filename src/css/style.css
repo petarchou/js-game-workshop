@@ -51,10 +51,14 @@ body {
 }
 
 .game-screen {
-    background: transparent;
+    /* background: transparent; */
     height: inherit;
     width: inherit;
-    background: #aaddfc;
+    background: url('/images/Battleground2.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    overflow: hidden;
 }
 
 .score {
@@ -63,6 +67,13 @@ body {
     width: inherit;
     text-align: center;
     font-size: 25px;
+    color: #fff;
+    text-shadow: 
+        -1px -1px 0 black,  
+         1px -1px 0 black,
+        -1px  1px 0 black,
+         1px  1px 0 black;
+
 }
 
 .wizard {

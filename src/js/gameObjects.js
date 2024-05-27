@@ -5,6 +5,10 @@ function initGameObjects() {
     const scoreboard = createScoreboard(gameScrn)
     const endScore = document.querySelector('.end-score');
 
+    gameScrn.style.border = "double 5px black"
+    startScrn.style.border = "double 5px black"
+    endScrn.style.border = "double 5px black"
+
 
     const createWizard = function(initialState) {
         let wizard = document.createElement('span');

@@ -14,8 +14,9 @@ function initGameState() {
             canvasHeight: 128,
             posX: 300,
             posY: 200,
-            speed: 5,
+            speed: determineSpeed(250),
             isMoving: false,
+            isShooting: false,
             changedState: false,
         },
         wizard: {
@@ -41,9 +42,9 @@ function initGameState() {
             speed: 3,
         },
         fireball: {
-            height: 25,
-            width: 25,
-            projectileSpeed: 5,
+            height: 30,
+            width: 30,
+            projectileSpeed: determineSpeed(200),
             timeBetweenAttacks: 500,
             nextSpawnTimestamp: 0,
         },
@@ -79,7 +80,7 @@ function setIdleImage(state) {
 
 function setWalkingImage(state) {
     const {character} = state
-    character.playerImage.src = 'images/Walk.png'
+    character.playerImage.src = 'images/Run.png'
     character.currentFrame = 0
     character.animationDuration = 7
     character.animationCounter = 0
@@ -95,4 +96,10 @@ function setAttackImage(state) {
     character.imageTotalFrames = 4
 }
 
+function determineSpeed(divisor) {
+    const gameScreen = document.querySelector('.game')
+    const rect = gameScreen.getBoundingClientRect()
+    // console.log(rect.width / divisor)
+    return rect.width / divisor
+}
 
