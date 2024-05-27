@@ -1,5 +1,5 @@
 # js-game-workshop
-A web game made with vanilla JavaScript - kill or avoid the bugs
+A web game made with vanilla JavaScript - The Last Defender
 
 https://js-game-workshop.vercel.app/
 
