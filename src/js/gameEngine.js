@@ -45,16 +45,23 @@ function gameLoop(gameObjects, state, timestamp) {
         if (timestamp > fireball.nextSpawnTimestamp) {
             character.isShooting = true
             setAttackImage(state)
-            setTimeout(() => {
-                fireball.posX = character.posX + character.frameWidth - 55;
-                fireball.posY = character.posY + character.frameHeight / 2;
-                gameObjects.spawnFireball(fireball)
-                character.isShotFired = true
-            }, 250)
-
+            window.requestAnimationFrame(shootFireball.bind(this, state, gameObjects))
             fireball.nextSpawnTimestamp = timestamp + fireball.timeBetweenAttacks;
         }
     }
+
+    function shootFireball(state, gameObjects) {
+        const {fireball, character} = state
+        if (character.currentFrame == character.imageTotalFrames - 1) {
+            fireball.posX = character.posX + character.frameWidth - 55;
+            fireball.posY = character.posY + character.frameHeight / 2;
+            gameObjects.spawnFireball(fireball)
+            character.isShotFired = true
+        } else {
+            window.requestAnimationFrame(shootFireball.bind(this, state, gameObjects))
+        }
+    }
+
 
     //Render Fireballs
     document.querySelectorAll('.fireball').forEach(fireballElement => {
