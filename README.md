@@ -3,6 +3,11 @@ A web game made with vanilla JavaScript - The Last Defender
 
 https://js-game-workshop.vercel.app/
 
+**Goal**
+---
+Kill as many enemies as you can without getting hit.
+Get the highest score.
+
 **Controls**
 ---
 
