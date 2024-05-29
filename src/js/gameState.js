@@ -37,9 +37,9 @@ function initGameState() {
                 imageSrc: '/images/orc/Run00.png',
                 imageTotalFrames: 12,
                 animationDuration: 8,
-                speed: determineSpeed(300),
+                speed: determineSpeed(350),
                 nextSpawnTimestamp: 0,
-                spawnDelay: 800,
+                spawnDelay: 680,
             }
         },
         bug: {

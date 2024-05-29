@@ -31,12 +31,16 @@ function initGameObjects() {
         canvas.width = orc.width
         canvas.height = orc.height
         canvas.style.left = gameScrn.offsetWidth - canvas.width + 'px'
-        canvas.style.top = Math.random()*(gameScrn.offsetHeight - canvas.height) + 'px';
+        canvas.style.top = getRandomArbitrary(0.5,1)*(gameScrn.offsetHeight - canvas.height) + 'px';
 
         gameScrn.append(canvas)
 
         return canvas
     }
+
+    function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+      }
 
     const spawnBug = function(initialState) {
         const bugElement = document.createElement('span');
