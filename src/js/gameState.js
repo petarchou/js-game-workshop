@@ -30,6 +30,18 @@ function initGameState() {
             posY: 200,
             speed: 5,
         },
+        enemies: {
+            orc: {
+                width: 100,
+                height: 100,
+                imageSrc: '/images/orc/Run00.png',
+                imageTotalFrames: 12,
+                animationDuration: 6,
+                speed: determineSpeed(300),
+                nextSpawnTimestamp: 0,
+                spawnDelay: 800,
+            }
+        },
         bug: {
             height: 50,
             width: 50,
@@ -39,7 +51,7 @@ function initGameState() {
             },
             nextSpawnTimestamp: 0,
             spawnDelay: 800,
-            speed: 3,
+            speed: determineSpeed(350),
         },
         fireball: {
             height: 30,

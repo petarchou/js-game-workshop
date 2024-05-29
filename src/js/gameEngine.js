@@ -1,7 +1,7 @@
 function startEngine(gameObjects, state) {
     renderScore(gameObjects, state)
     gameObjects.createCharacterCanvas(state.character)
-    window.requestAnimationFrame(gameLoop.bind(this, gameObjects, state));
+    requestAnimationFrame(gameLoop.bind(this, gameObjects, state))
 }
 
 function gameLoop(gameObjects, state, timestamp) {
@@ -20,8 +20,8 @@ function gameLoop(gameObjects, state, timestamp) {
 
 
     if (state.score >= state.nextLevel) {
-        state.bug.speed += 0.5;
-        state.bug.spawnDelay *= 0.9
+        state.enemies.orc.speed += 0.5;
+        state.enemies.orc.spawnDelay *= 0.9
         console.log('levelUp');
         state.nextLevel += 100;
     }
@@ -72,38 +72,37 @@ function gameLoop(gameObjects, state, timestamp) {
         fireballElement.style.left = (pos + fireball.projectileSpeed) + 'px';
     });
 
-
-    //Spawn bugs
-    if (timestamp > state.bug.nextSpawnTimestamp) {
-        gameObjects.spawnBug(state.bug);
-        state.bug.nextSpawnTimestamp = timestamp + state.bug.spawnDelay;
+    if(timestamp > state.enemies.orc.nextSpawnTimestamp) {
+        let orc = new Enemy(state.enemies.orc, gameObjects.createOrcCanvas(state))
+        orc.animate()
+        state.enemies.orc.nextSpawnTimestamp = timestamp + state.enemies.orc.spawnDelay
     }
 
-    //Render bugs
+    //Move enemies 
 
-    document.querySelectorAll('.bug').forEach(bugElement => {
-        const pos = parseInt(bugElement.style.left);
-        if (pos < -state.bug.width) {
-            killBug(bugElement)
+    document.querySelectorAll('.orc').forEach(orcElement => {
+        const pos = parseInt(orcElement.style.left);
+        if (pos < -state.enemies.orc.width) {
+            removeFromScreen(orcElement)
             return;
         }
-        bugElement.style.left = (pos - state.bug.speed) + 'px';
+        orcElement.style.left = (pos - state.enemies.orc.speed) + 'px';
     })
 
-    //Fireball vs Bug collision
-    document.querySelectorAll('.fireball').forEach(fireballElement => {
-        document.querySelectorAll('.bug').forEach(bugElement => {
-            if (areColliding(fireballElement, bugElement)) {
+     //Fireball vs Orc collision
+     document.querySelectorAll('.fireball').forEach(fireballElement => {
+        document.querySelectorAll('.orc').forEach(orcElement => {
+            if (areColliding(fireballElement, orcElement)) {
                 fireballElement.remove();
-                killBug(bugElement);
+                removeFromScreen(orcElement);
                 addScore(state, gameObjects);
             }
         })
     })
 
-    //Character vs Bug Collision (Game Over)
-    document.querySelectorAll('.bug').forEach(bugElement => {
-        if (characterIsColiding(characterCanvas, bugElement)) {
+    //Character vs Orc Collision (Game Over)
+    document.querySelectorAll('.orc').forEach(orcElement => {
+        if (characterIsColiding(characterCanvas, orcElement)) {
             state.isGameOver = true;
             return;
         }
@@ -153,6 +152,7 @@ function characterStateChange(character, isNowMoving) {
     }
 }
 
+//TODO need to measure empty pixels in the orc canvas
 function areColliding(ObjectA, ObjectB) {
     let first = ObjectA.getBoundingClientRect();
     let second = ObjectB.getBoundingClientRect();
@@ -181,8 +181,8 @@ function characterIsColiding(character, anotherObj) {
     return collision;
 }
 
-function killBug(bugElement) {
-    bugElement.remove();
+function removeFromScreen(element) {
+    element.remove();
 }
 
 function addScore(state, gameObjects) {
@@ -220,16 +220,15 @@ function animateCharacter(state, characterCanvas) {
     ctx.clearRect(0, 0, character.canvasWidth, character.canvasHeight)
 
 
-    const centerX = character.canvasWidth / 2 - character.frameWidth / 2;
-    const centerY = character.canvasHeight / 2 - character.frameHeight / 2;
-
     const currentFrameWidth = character.currentFrame * character.frameWidth
 
     ctx.drawImage(character.playerImage,
         currentFrameWidth, 0,
         character.frameWidth, character.frameHeight,
-        centerX, centerY,
-        character.frameWidth, character.frameHeight)
+        0, 0,
+        character.canvasWidth, character.canvasHeight)
+
+        console.log(`state is ${state}`)
 
     rollThroughSprite(state)
 }
@@ -237,7 +236,6 @@ function animateCharacter(state, characterCanvas) {
 
 
 function rollThroughSprite(state) {
-
     const { character } = state
     character.animationCounter++
     if (character.animationCounter % character.animationDuration == 0) {

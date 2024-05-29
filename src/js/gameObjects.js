@@ -9,25 +9,6 @@ function initGameObjects() {
     startScrn.style.border = "double 5px black"
     endScrn.style.border = "double 5px black"
 
-
-    const createWizard = function(initialState) {
-        let wizard = document.createElement('span');
-        wizard.classList.add('wizard');
-
-        let {height, width} = initialState;
-
-        wizard.style.height = height + 'px';
-        wizard.style.width = width + 'px';
-        wizard.style.top = initialState.posY + 'px';
-        wizard.style.left = initialState.posX + 'px';
-
-        gameScrn.append(wizard);
-        
-        this.wizardElement = wizard;
-
-        return wizard;
-    }
-
     const createCharacterCanvas = function(initialState) {
         const canvas = document.createElement('canvas')
         canvas.classList.add('character')
@@ -43,6 +24,20 @@ function initGameObjects() {
         return canvas
     }
 
+    const createOrcCanvas = function(initialState) {
+        const {orc} = initialState.enemies
+        const canvas = document.createElement('canvas')
+        canvas.classList.add('orc')
+        canvas.width = orc.width
+        canvas.height = orc.height
+        canvas.style.left = gameScrn.offsetWidth - canvas.width + 'px'
+        canvas.style.top = Math.random()*(gameScrn.offsetHeight - canvas.height) + 'px';
+
+        gameScrn.append(canvas)
+
+        return canvas
+    }
+
     const spawnBug = function(initialState) {
         const bugElement = document.createElement('span');
         bugElement.classList.add('bug');
@@ -51,7 +46,7 @@ function initGameObjects() {
 
         bugElement.style.height = height + 'px';
         bugElement.style.width = width + 'px';
-        bugElement.style.left = gameScrn.offsetWidth-50 + 'px';
+        bugElement.style.left = gameScrn.offsetWidth + 'px';
         bugElement.style.top = Math.random()*(gameScrn.offsetHeight-height) + 'px';
 
         gameScrn.appendChild(bugElement);
@@ -80,7 +75,7 @@ function initGameObjects() {
         endScrn,
         scoreboard,
         endScore,
-        createWizard,
+        createOrcCanvas,
         spawnBug,
         spawnFireball,
         createCharacterCanvas,

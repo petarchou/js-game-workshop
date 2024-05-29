@@ -96,6 +96,10 @@ body {
     overflow: hidden;
 }
 
+.orc {
+    position: absolute
+}
+
 .fireball {
     position: absolute;
     background: url('/images/fire-ball.png');
