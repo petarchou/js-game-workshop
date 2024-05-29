@@ -26,7 +26,7 @@ function gameLoop(gameObjects, state, timestamp) {
         state.nextLevel += 100;
     }
 
-    const { fireball, shuriken, character } = state;
+    const { fireball, character } = state;
     const { characterCanvas } = gameObjects
 
     character.changedState = false

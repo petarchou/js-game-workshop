@@ -33,8 +33,8 @@ function initGameObjects() {
         canvas.classList.add('character')
         canvas.width = initialState.canvasWidth
         canvas.height = initialState.canvasHeight
-        state.character.posX = canvas.style.left
-        state.character.posY = canvas.style.top
+        state.character.posX = gameScrn.offsetWidth*0.1
+        state.character.posY = gameScrn.offsetHeight*0.6
 
         gameScrn.append(canvas)
 
