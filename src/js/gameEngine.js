@@ -123,7 +123,7 @@ function modifyCharacterPositionState(gameObjects, state) {
 
     if (state.keys.KeyW) {
         //this 0 is hard-coded and prevents me from putting a smaller screen
-        character.posY = Math.max(character.posY - character.speed, -44);
+        character.posY = Math.max(character.posY - character.speed, 0.45*gameObjects.gameScrn.offsetHeight-44);
         isNowMoving = true
     }
     if (state.keys.KeyA) {
@@ -141,6 +141,12 @@ function modifyCharacterPositionState(gameObjects, state) {
 
     characterStateChange(character, isNowMoving)
 }
+
+
+//Dup function - also in gameObjects
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
 function characterStateChange(character, isNowMoving) {
     if (isNowMoving && !character.isMoving) {
