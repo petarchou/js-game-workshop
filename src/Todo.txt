@@ -1,7 +1,6 @@
 1. Spawn character on the floor - done
-2. Change enemies sprite
-
-size - 196x128 / 128x84
+2. Change enemies sprite - done
+3. Fix orc hitbox for fireballs
 
 
 3. Finalize the game purpose
