@@ -227,9 +227,6 @@ function animateCharacter(state, characterCanvas) {
         character.frameWidth, character.frameHeight,
         0, 0,
         character.canvasWidth, character.canvasHeight)
-
-        console.log(`state is ${state}`)
-
     rollThroughSprite(state)
 }
 

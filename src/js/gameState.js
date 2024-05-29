@@ -36,7 +36,7 @@ function initGameState() {
                 height: 100,
                 imageSrc: '/images/orc/Run00.png',
                 imageTotalFrames: 12,
-                animationDuration: 6,
+                animationDuration: 8,
                 speed: determineSpeed(300),
                 nextSpawnTimestamp: 0,
                 spawnDelay: 800,
@@ -111,7 +111,6 @@ function setAttackImage(state) {
 function determineSpeed(divisor) {
     const gameScreen = document.querySelector('.game')
     const rect = gameScreen.getBoundingClientRect()
-    // console.log(rect.width / divisor)
     return rect.width / divisor
 }
 

@@ -85,7 +85,6 @@ function initGameObjects() {
 
 function createScoreboard(gameScrn) {
     let scoreboard = document.querySelector('.score')
-    console.log(scoreboard)
 
     if (!scoreboard) {
         scoreboard = document.createElement('div')

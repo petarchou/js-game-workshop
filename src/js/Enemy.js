@@ -8,7 +8,6 @@ class Enemy {
         //common state for the enemy type - in gameState
         const {imageSrc, imageTotalFrames, animationDuration, width, height, speed} = commonState
         this.image = new Image()
-        console.log(imageSrc)
         this.image.src = imageSrc
         this.imageTotalFrames = imageTotalFrames
         this.animationDuration = animationDuration
