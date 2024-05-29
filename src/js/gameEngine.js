@@ -73,7 +73,7 @@ function gameLoop(gameObjects, state, timestamp) {
     });
 
     if(timestamp > state.enemies.orc.nextSpawnTimestamp) {
-        let orc = new Enemy(state.enemies.orc, gameObjects.createOrcCanvas(state))
+        let orc = new Enemy(state, gameObjects.createOrcCanvas(state))
         orc.animate()
         state.enemies.orc.nextSpawnTimestamp = timestamp + state.enemies.orc.spawnDelay
     }

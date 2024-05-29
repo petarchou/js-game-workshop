@@ -1,12 +1,12 @@
 class Enemy {
-    constructor(commonState, canvas) {
+    constructor(state, canvas) {
         this.posX = canvas.style.left
         this.posY = canvas.style.top
         this.currentFrame = 0
         this.animationCounter = 0
 
         //common state for the enemy type - in gameState
-        const {imageSrc, imageTotalFrames, animationDuration, width, height, speed} = commonState
+        const {imageSrc, imageTotalFrames, animationDuration, width, height, speed} = state.enemies.orc
         this.image = new Image()
         this.image.src = imageSrc
         this.imageTotalFrames = imageTotalFrames
@@ -24,10 +24,14 @@ class Enemy {
 
 
     animate() {
+        if(state.paused) {
+            requestAnimationFrame(this.animate.bind(this))
+            return
+        }
+        
         const ctx = this.htmlElement.getContext('2d')
         ctx.clearRect(0, 0, this.width, this.height)
         ctx.drawImage(this.image, 0 , 0, this.width, this.height)
-
 
         this.rollThroughSprite()
         requestAnimationFrame(this.animate.bind(this))
