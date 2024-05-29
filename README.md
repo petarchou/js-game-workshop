@@ -11,6 +11,8 @@ Movement: **WASD**
 
 Fire: **Space**
 
+Pause: **Escape**
+
 Local Setup
 ---
 1. Clone the repository
