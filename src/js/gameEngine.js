@@ -163,10 +163,10 @@ function areColliding(ObjectA, ObjectB) {
     let first = ObjectA.getBoundingClientRect();
     let second = ObjectB.getBoundingClientRect();
 
-    const isSafeFromTop = first.top > second.bottom;
-    const isSafeFromBottom = first.bottom < second.top;
-    const isSafeFromLeft = first.left > second.right;
-    const isSafeFromRight = first.right < second.left;
+    const isSafeFromTop = first.top > second.bottom-25;
+    const isSafeFromBottom = first.bottom < second.top+23;
+    const isSafeFromLeft = first.left > second.right-33;
+    const isSafeFromRight = first.right < second.left+38;
 
     const collision = !isSafeFromTop && !isSafeFromRight && !isSafeFromBottom && !isSafeFromLeft;
 
@@ -177,10 +177,10 @@ function characterIsColiding(character, anotherObj) {
     let charRect = character.getBoundingClientRect();
     let second = anotherObj.getBoundingClientRect();
 
-    const isSafeFromTop = charRect.top + 44 > second.bottom;
-    const isSafeFromBottom = charRect.bottom < second.top;
-    const isSafeFromLeft = charRect.left + 40 > second.right;
-    const isSafeFromRight = charRect.right - 58 < second.left;
+    const isSafeFromTop = charRect.top + 44 > second.bottom-25;
+    const isSafeFromBottom = charRect.bottom < second.top+23;
+    const isSafeFromLeft = charRect.left + 40 > second.right-33;
+    const isSafeFromRight = charRect.right - 58 < second.left+30;
 
     const collision = !isSafeFromTop && !isSafeFromRight && !isSafeFromBottom && !isSafeFromLeft;
 
