@@ -1,10 +1,7 @@
 
-let level = 1
-let attackDuration = 5
 function initGameState() {
-    level = 1
-    attackDuration = 5
     const state = {
+        level: 1,
         score: 0,
         nextLevel: 100,
         character: {
@@ -82,7 +79,7 @@ function setIdleImage(state) {
     character.animationDuration = 10
     character.animationCounter = 0
     character.imageTotalFrames = 6
-}
+}   
 
 function setWalkingImage(state) {
     const {character} = state
@@ -97,9 +94,18 @@ function setAttackImage(state) {
     const {character} = state
     character.playerImage.src = 'images/Attack_1.png'
     character.currentFrame = 0
-    character.animationDuration = attackDuration
+    character.animationDuration = 5
     character.animationCounter = 0
     character.imageTotalFrames = 4
+}
+
+function setDeathImage(state) {
+    const {character} = state
+    character.playerImage.src = 'images/Dead.png'
+    character.currentFrame = 0
+    character.animationDuration = 10
+    character.animationCounter = 0
+    character.imageTotalFrames = 3
 }
 
 function determineSpeed(divisor) {

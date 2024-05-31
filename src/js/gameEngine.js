@@ -5,29 +5,35 @@ function startEngine(gameObjects, state) {
 }
 
 function gameLoop(gameObjects, state, timestamp) {
+
+    const { fireball, character } = state;
+    const { characterCanvas } = gameObjects
+
     if (state.paused) {
         window.requestAnimationFrame(gameLoop.bind(this, gameObjects, state));
         return;
     }
     if (state.isGameOver) {
-        alert('Game Over')
-        gameObjects.gameScrn.classList.add('hidden')
-        gameObjects.endScrn.classList.remove('hidden')
-        gameObjects.endScore.textContent = `Score: ${state.score} points`;
-        cleanUpGameScreen(gameObjects)
+        setDeathImage(state)
+        deathSequence(state, characterCanvas)
         return
     }
 
 
     if (state.score >= state.nextLevel) {
-        state.enemies.orc.speed += 0.5;
-        state.enemies.orc.spawnDelay *= 0.9
-        console.log('levelUp');
+        state.level++
+        if(state.level % 3 == 0) {
+            state.enemies.orc.speed += 0.3;
+        }
+        if (state.level % 5 == 0) {
+            state.fireball.timeBetweenAttacks = Math.max(250, state.fireball.timeBetweenAttacks * 0.9)
+        }
+        state.enemies.orc.spawnDelay = Math.max(200, state.enemies.orc.spawnDelay * 0.95)
         state.nextLevel += 100;
+        // fasterReload(state)
     }
 
-    const { fireball, character } = state;
-    const { characterCanvas } = gameObjects
+    
 
     character.changedState = false
 
@@ -263,4 +269,41 @@ function cleanUpGameScreen(gameObjects) {
         gameScrn.removeChild(gameScrn.firstElementChild)
     }
     gameScrn.append(scoreToReappend)
+}
+
+function deathSequence(state, characterCanvas) {
+    const {character} = state
+
+    const ctx = characterCanvas.getContext('2d')
+    ctx.clearRect(0, 0, character.canvasWidth, character.canvasHeight)
+
+
+    const currentFrameWidth = character.currentFrame * character.frameWidth
+
+    ctx.drawImage(character.playerImage,
+        currentFrameWidth, 0,
+        character.frameWidth, character.frameHeight,
+        0, 0,
+        character.canvasWidth, character.canvasHeight)
+
+    rollThroughDeath(state)
+
+    if (character.currentFrame >= character.imageTotalFrames) {
+        alert('Game Over')
+        gameObjects.gameScrn.classList.add('hidden')
+        gameObjects.endScrn.classList.remove('hidden')
+        gameObjects.endScore.textContent = `Score: ${state.score} points`;
+        cleanUpGameScreen(gameObjects)
+        return
+    }
+
+    window.requestAnimationFrame(deathSequence.bind(this, state, characterCanvas))
+}
+
+function rollThroughDeath(state) {
+    const { character } = state
+    character.animationCounter++
+    if (character.animationCounter % character.animationDuration == 0) {
+        character.currentFrame += 1;
+    }
 }

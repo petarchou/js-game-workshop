@@ -28,6 +28,9 @@ class Enemy {
             requestAnimationFrame(this.animate.bind(this))
             return
         }
+        if(state.isGameOver) {
+            return
+        }
         
         const ctx = this.htmlElement.getContext('2d')
         ctx.clearRect(0, 0, this.width, this.height)
