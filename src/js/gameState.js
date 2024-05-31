@@ -1,4 +1,9 @@
+
+let level = 1
+let attackDuration = 5
 function initGameState() {
+    level = 1
+    attackDuration = 5
     const state = {
         score: 0,
         nextLevel: 100,
@@ -41,17 +46,6 @@ function initGameState() {
                 nextSpawnTimestamp: 0,
                 spawnDelay: 680,
             }
-        },
-        bug: {
-            height: 50,
-            width: 50,
-            set scale(n) {
-                this.width *= n;
-                this.height *= n;
-            },
-            nextSpawnTimestamp: 0,
-            spawnDelay: 800,
-            speed: determineSpeed(350),
         },
         fireball: {
             height: 30,
@@ -103,7 +97,7 @@ function setAttackImage(state) {
     const {character} = state
     character.playerImage.src = 'images/Attack_1.png'
     character.currentFrame = 0
-    character.animationDuration = 5
+    character.animationDuration = attackDuration
     character.animationCounter = 0
     character.imageTotalFrames = 4
 }
