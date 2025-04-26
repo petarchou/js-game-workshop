@@ -1,8 +1,6 @@
 let state = initGameState();
 let gameObjects = initGameObjects();
 
-determineSpeed()
-
 const characterKeys = [
     'KeyW',
     'KeyA',
@@ -55,6 +53,8 @@ function togglePause(state) {
 }
 
 function startGameLogic() {
+    determineSpeed()
+    
     gameObjects.startScrn.addEventListener('click',function(e){
         gameObjects.startScrn.classList.add('hidden')
         gameObjects.gameScrn.classList.remove('hidden')
@@ -79,4 +79,5 @@ function restartGameLogic() {
 function restartGameState() {
     state = initGameState()
     gameObjects = initGameObjects()
+    determineSpeed()
 }
